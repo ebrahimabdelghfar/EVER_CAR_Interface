@@ -1,0 +1,9 @@
+In Terminal 1
+	1 - mkfifo /tmp/dlt
+	2 - cat /tmp/dlt
+In Terminal 2
+	1 - systemctl stop mosquitto.service
+	2 - mosquitto -c mosquitto.conf -v
+In terminal 3
+	1 - roslaunch mqtt_client standalone.launch params_file:=subscriber.yaml
+

@@ -1,0 +1,12 @@
+broker:
+  host: localhost
+  port: 1883
+bridge:
+  ros2mqtt:
+    - ros_topic: /publish/primitive
+      mqtt_topic: receive_from_ros
+      primitive: true
+  mqtt2ros:
+    - mqtt_topic: send_to_ros
+      ros_topic: subscribe
+      primitive: true
