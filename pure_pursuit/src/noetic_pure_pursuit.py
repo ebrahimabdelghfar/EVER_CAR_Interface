@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Imports
 import os
 import time
 import math
@@ -15,7 +14,7 @@ from visualization_msgs.msg import Marker
 from std_msgs.msg import Header, ColorRGBA
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import PoseStamped, Point, Twist, Quaternion, Pose, Point, Vector3
-
+from std_msgs.msg import Float32
 
 # GLOBAL VARIABLES 
 xc = 0.0
@@ -116,9 +115,12 @@ def pure_pursuit():
 	global xc, yc, yaw, vel, waypoints, v_prev_error, freqs, idx,LOOKAHEAD, WB, pure_pursuit_flag, show_animation
 
 	# Initialize the message, subscriber and publisher
-	msg = Twist()
+	steer_msg = Float32()
+	throttle_msg = Float32()
 	rospy.Subscriber("/aft_mapped_adjusted", Odometry, pose_callback) 
-	pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+	#define control_topics
+	steer = rospy.Publisher("/in_Car_steering_in_degree",Float32,queue_size=1)
+	throttle = rospy.Publisher("/in_Car_velocity_in_KM/H",Float32,queue_size=1)
 
 	cx = waypoints[:, 0]; cy = waypoints[:, 1]
 
@@ -169,10 +171,13 @@ def pure_pursuit():
 				steering_angle = -30.0
 
 			# Publish messages
-			msg.linear.x = velocity
-			msg.angular.z = -steering_angle
-			pub.publish(msg)
-			print("Steering Angle: ", msg.angular.z, "Velocity: ", msg.linear.x)
+			throttle_msg.data = velocity
+			steer_msg.data = steering_angle
+
+			steer.publish(steer_msg)
+			throttle.publish(throttle_msg)
+
+			print("Steering Angle: ", steer_msg.data , "Velocity: ", throttle_msg.data)
 			# Plot map progression
 			if show_animation:
 				plt.cla()
