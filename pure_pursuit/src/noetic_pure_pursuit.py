@@ -29,8 +29,8 @@ freqs = 2
 # CAR VARIABLES
 # LOOKAHEAD = 1.5 # 1.5
 # WB = 0.3421
-LOOKAHEAD = 6.5 # 1.5
-WB = 1.29
+LOOKAHEAD = 3.5 # 1.5
+WB = 2.1
 
 # PROGRAM VARIABLES
 pure_pursuit_flag = True
@@ -40,7 +40,7 @@ def read_points():
    """
    CHANGE THIS PATH TO WHERE YOU HAVE SAVED YOUR CSV FILES
    """
-   file_name = 'wp_file.csv' #'racecar_walker.csv'
+   file_name = '/home/ever/ever2_ws/src/EVER_CAR_Interface-main/wp_file.csv' #'racecar_walker.csv'
    file_path = file_name
    with open(file_path) as f:
       path_points = np.loadtxt(file_path, delimiter = ',')
@@ -171,8 +171,8 @@ def pure_pursuit():
 				steering_angle = -30.0
 
 			# Publish messages
-			throttle_msg.data = velocity
-			steer_msg.data = steering_angle
+			throttle_msg.data = 3.0
+			steer_msg.data = -steering_angle
 
 			steer.publish(steer_msg)
 			throttle.publish(throttle_msg)
